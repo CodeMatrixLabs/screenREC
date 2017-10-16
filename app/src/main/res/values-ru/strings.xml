@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">screenREC</string>
-    <string name="record_audio_permission_message">Для корректной записи видео нам необходимо получить разрешение на запись аудио.</string>
     <string name="action_settings">Настройки</string>
     <string name="permissions_message">Для правильной видеозаписи нам необходимо получить разрешения на запись звука и запись на внешнее хранилище.</string>
+    <string name="stop_recording_action">Остановить запись</string>
+    <string name="notification_body">Запись…</string>
 </resources>

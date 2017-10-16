@@ -22,7 +22,7 @@ import software.kanunnikoff.screenrec.core.PermissionManager.CAST_PERMISSION_COD
 import software.kanunnikoff.screenrec.core.PermissionManager.PERMISSIONS_CODE
 import java.util.*
 import android.content.pm.PackageManager
-
+import software.kanunnikoff.screenrec.core.Core
 
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val dateFormat = SimpleDateFormat("_yyyyMMdd_HHmmss", Locale.getDefault())
     private val DEFAULT_FILE_NAME = "screenrec"
     private val displayMetrics = DisplayMetrics()
+    private var isRecording = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             if (projection.isInited()) {
                 recorder.stop()
                 projection.stop()
+                isRecording = false
             } else {
                 if (PermissionManager.hasPermissions(this)) {
                     startActivityForResult((getSystemService(Context.MEDIA_PROJECTION_SERVICE) as MediaProjectionManager).createScreenCaptureIntent(), CAST_PERMISSION_CODE)
@@ -122,6 +124,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                     projection.init(this, displayMetrics, recorder, resultCode, data)
                     recorder.start()
+                    isRecording = true
                 }
             }
         }
@@ -135,5 +138,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        val stopRecording = intent?.extras?.getBoolean(Core.STOP_RECORDING_ACTION)
+
+        if (stopRecording != null && stopRecording) {
+            fab.performClick()
+        } else {
+            super.onNewIntent(intent)
+        }
+    }
+
+    override fun onPause() {
+        if (isRecording) {
+            Core.showNotification(this, resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
+        }
+
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Core.hideNotifications(this)
     }
 }
