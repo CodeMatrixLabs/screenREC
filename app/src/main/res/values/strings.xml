@@ -11,11 +11,129 @@
     <string name="notification_body">Recording…</string>
 
     <string name="all_records_tab">All</string>
-    <string name="favored_records_tab">Favored</string>
+    <string name="favored_records_tab">Favorites</string>
 
     <string name="rename">Rename</string>
     <string name="play">Play</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+
+    <string name="dialog_delete_record">Delete this record?</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="enter_new_title">Enter new title</string>
+    <string name="field_must_not_be_empty">The field must not be empty!</string>
+    <string name="record">Record</string>
+
+    <string name="mb">mb</string>
+    <string name="kb">kb</string>
+    <string name="b">b</string>
+
+    <string name="h">h</string>
+    <string name="m">m</string>
+    <string name="s">s</string>
+
+    <string name="rate">Rate</string>
+    <string name="remove_ads">Remove Ads</string>
+    <string name="buy">Buy</string>
+
+    <!-- Settings -->
+
+    <string name="pref_basic_title">Basic</string>
+    <string name="pref_file_name_prefix_title">File name prefix</string>
+    <string name="pref_file_name_prefix_summary">File name prefix for the record on the storage</string>
+
+    <string name="pref_record_title_prefix_title">Record title prefix</string>
+    <string name="pref_record_title_prefix_summary">Record title prefix in the records list</string>
+
+    <string name="pref_recorder_title">Recorder</string>
+
+    <string name="pref_output_format_title">Output format</string>
+    <string name="pref_output_format_summary" translatable="false">3GPP, MPEG 4</string>
+    <string name="pref_choose_output_format_dialog_title">Choose format</string>
+    <string-array name="pref_output_format_titles">
+        <item>Default</item>
+        <item>3GPP</item>
+        <item>MPEG 4</item>
+    </string-array>
+    <string-array name="pref_output_format_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_audio_encoder_title">Audio encoder</string>
+    <string name="pref_audio_encoder_summary" translatable="false">AMR, AAC, ..</string>
+    <string name="pref_choose_audio_encoder_dialog_title">Choose encoder</string>
+    <string-array name="pref_audio_encoder_titles">
+        <item>Default</item>
+        <item>AMR (Narrowband)</item>
+        <item>AMR (Wideband)</item>
+        <item>AAC Low Complexity (AAC-LC)</item>
+        <item>High Efficiency AAC (HE-AAC)</item>
+        <item>Enhanced Low Delay AAC (AAC-ELD)</item>
+        <item>Ogg Vorbis</item>
+    </string-array>
+    <string-array name="pref_audio_encoder_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string name="pref_audio_encoding_bit_rate_title">Audio encoding bit rate</string>
+    <string name="pref_audio_encoding_bit_rate_summary">Choose appropriate bit rate</string>
+
+    <string name="pref_audio_sampling_rate_title">Audio sampling rate</string>
+    <string name="pref_audio_sampling_rate_summary">Choose appropriate sampling rate</string>
+
+    <string name="pref_audio_channels_title">Audio channels</string>
+    <string name="pref_audio_channels_summary">Mono, Stereo</string>
+    <string name="pref_choose_audio_channels_dialog_title">Choose channels</string>
+    <string-array name="pref_audio_channels_titles">
+        <item>Mono</item>
+        <item>Stereo</item>
+    </string-array>
+    <string-array name="pref_audio_channels_values">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
+    <string name="pref_video_encoder_title">Video encoder</string>
+    <string name="pref_video_encoder_summary" translatable="false">H264, VP8, ..</string>
+    <string name="pref_choose_video_encoder_dialog_title">Choose encoder</string>
+    <string-array name="pref_video_encoder_titles">
+        <item>Default</item>
+        <item>H263</item>
+        <item>H264</item>
+        <item>MPEG4 SP</item>
+        <item>VP8</item>
+        <item>HEVC</item>
+    </string-array>
+    <string-array name="pref_video_encoder_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string name="pref_video_encoding_bit_rate_title">Video encoding bit rate</string>
+    <string name="pref_video_encoding_bit_rate_summary">Choose appropriate bit rate</string>
+
+    <string name="pref_video_frame_rate_title">Video frame rate</string>
+    <string name="pref_video_frame_rate_summary">Choose appropriate frame rate</string>
+
+    <string name="pref_video_size_width_title">Video width</string>
+    <string name="pref_video_size_width_summary">Choose appropriate width</string>
+
+    <string name="pref_video_size_height_title">Video height</string>
+    <string name="pref_video_size_height_summary">Choose appropriate height</string>
+
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

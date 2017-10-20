@@ -84,9 +84,17 @@ class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: Recyc
                 if (record.isFavored == 1) {
                     Core.unFavoriteRecord(record)
                     record.isFavored = 0
-                    activity.favoredRecordsSubFragment.adapter!!.records.remove(record)
-                    activity.favoredRecordsSubFragment.adapter?.notifyDataSetChanged()
-                    holder.favorite.setImageDrawable(activity.resources.getDrawable(R.drawable.ic_favorite_border_black_24px))
+
+                    if (!isFavoredRecordsSubFragment) {
+                        activity.favoredRecordsSubFragment.adapter!!.records.remove(record)
+                        activity.favoredRecordsSubFragment.adapter?.notifyDataSetChanged()
+                        holder.favorite.setImageDrawable(activity.resources.getDrawable(R.drawable.ic_favorite_border_black_24px))
+                    } else {
+                        records.remove(record)
+                        notifyDataSetChanged()
+                        activity.allRecordsSubFragment.adapter!!.records.find { it -> it.id == record.id }?.isFavored = 0
+                        activity.allRecordsSubFragment.adapter!!.notifyDataSetChanged()
+                    }
                 } else {
                     Core.favoriteRecord(record)
                     record.isFavored = 1
@@ -96,20 +104,27 @@ class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: Recyc
                 }
             }
 
-            if (isFavoredRecordsSubFragment) {
-                holder.favorite.visibility = View.INVISIBLE
-            }
-
             holder.menu.setOnClickListener {
-                val dialog = MenuDialogFragment(record, onDelete = {
-                    Core.deleteRecord(record)
-                    activity.allRecordsSubFragment.adapter!!.records.remove(record)
-                    activity.allRecordsSubFragment.adapter?.notifyDataSetChanged()
-                    activity.favoredRecordsSubFragment.adapter!!.records.remove(record)
-                    activity.favoredRecordsSubFragment.adapter?.notifyDataSetChanged()
-                })
+                RecordMenuDialogFragment(record, onDelete = {
+                    ConfirmDeletionDialogFragment(onConfirm = {
+                        Core.deleteRecord(record)
+                        activity.allRecordsSubFragment.adapter!!.records.remove(record)
+                        activity.allRecordsSubFragment.adapter?.notifyDataSetChanged()
+                        activity.favoredRecordsSubFragment.adapter!!.records.remove(record)
+                        activity.favoredRecordsSubFragment.adapter?.notifyDataSetChanged()
+                    }).show(activity.supportFragmentManager, ConfirmDeletionDialogFragment.TAG)
+                },
+                onRename = {
+                    RenameRecordDialogFragment(onRename = { title ->
+                        Core.renameRecord(record, title)
+                        record.title = title
 
-                dialog.show(activity.supportFragmentManager, MenuDialogFragment.TAG)
+                        activity.allRecordsSubFragment.adapter!!.records.find { it -> it.id == record.id }?.title = title
+                        activity.allRecordsSubFragment.adapter!!.notifyDataSetChanged()
+                        activity.favoredRecordsSubFragment.adapter!!.records.find { it -> it.id == record.id }?.title = title
+                        activity.favoredRecordsSubFragment.adapter!!.notifyDataSetChanged()
+                    }).show(activity.supportFragmentManager, RenameRecordDialogFragment.TAG)
+                }).show(activity.supportFragmentManager, RecordMenuDialogFragment.TAG)
             }
 
             if (position % 2 != 0) {
@@ -117,8 +132,6 @@ class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: Recyc
             } else {
                 holder.view.setBackgroundColor(activity.resources.getColor(R.color.defaultBackgroundColor))
             }
-        } else {
-            Log.i(Core.APP_TAG, "*** NOT RecordViewHolder o_O, position = $position")
         }
     }
 

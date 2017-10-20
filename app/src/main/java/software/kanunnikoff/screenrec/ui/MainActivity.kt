@@ -26,14 +26,17 @@ import android.graphics.Bitmap
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
+import android.preference.PreferenceManager
 import android.provider.MediaStore
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.Log
 import software.kanunnikoff.screenrec.R
 import software.kanunnikoff.screenrec.core.Core
+import software.kanunnikoff.screenrec.core.Core.DEFAULT_FILE_NAME
 import software.kanunnikoff.screenrec.model.Record
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -42,8 +45,6 @@ import java.io.File
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     private val recorder = MyMediaRecorder()
     private val projection = MyMediaProjection()
-    private val dateFormat = SimpleDateFormat("_yyyyMMdd_HHmmss", Locale.getDefault())
-    private val DEFAULT_FILE_NAME = "screenrec"
     private val displayMetrics = DisplayMetrics()
     private var isRecording = false
     val allRecordsSubFragment = AllRecordsSubFragment()
@@ -67,15 +68,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 var length = File(recorder.outputFileAbsolutePath).length() / 1024 / 1024   // megabytes
 
                 if (length > 0) {
-                    size = length.toString() + "mb"
+                    size = length.toString() + resources.getString(R.string.mb)
                 } else {
                     length = File(recorder.outputFileAbsolutePath).length() / 1024   // kilobytes
 
                     if (length > 0) {
-                        size = length.toString() + "kb"
+                        size = length.toString() + resources.getString(R.string.kb)
                     } else {
                         length = File(recorder.outputFileAbsolutePath).length()   // bytes
-                        size = length.toString() + "b"
+                        size = length.toString() + resources.getString(R.string.b)
                     }
                 }
 
@@ -85,17 +86,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 val record = Record(
                         -1,
-                        "Record #${Core.recordNumber}",
+                        Core.getRecordTitlePrefix() + " #${Core.recordNumber}",
                         Core.outputFormatString(),
                         recorder.outputFileAbsolutePath,
                         Core.audioEncoderString(),
-                        Core.audioEncodingBitRate.toString(),
-                        Core.audioSamplingRate.toString(),
+                        Core.getAudioEncodingBitRate().toString(),
+                        Core.getAudioSamplingRate().toString(),
                         Core.audioChannelsString(),
                         Core.videoEncoderString(),
-                        Core.videoEncodingBitRate.toString(),
-                        Core.videoFrameRate.toString(),
-                        "${Core.videoSizeWidth}x${Core.videoSizeHeight}",
+                        Core.getVideoEncodingBitRate().toString(),
+                        Core.getVideoFrameRate().toString(),
+                        "${Core.getVideoSizeWidth()}x${Core.getVideoSizeHeight()}",
                         0,
                         size,
                         Core.formatDuration(recorder.duration / 1000),
@@ -104,6 +105,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         )
 
                 record.id = Core.insertRecord(record)
+                Log.i(Core.APP_TAG, "*** allRecordsSubFragment = $allRecordsSubFragment")
+                Log.i(Core.APP_TAG, "*** allRecordsSubFragment.adapter = ${allRecordsSubFragment.adapter}")
+                Log.i(Core.APP_TAG, "*** allRecordsSubFragment.adapter?.records = ${allRecordsSubFragment.adapter?.records}")
                 allRecordsSubFragment.adapter!!.records.add(0, record)
                 allRecordsSubFragment.adapter?.notifyDataSetChanged()
                 Core.recordNumber++
@@ -153,6 +157,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         })
 
         Core.init(this)
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
     }
 
     override fun onBackPressed() {
@@ -174,7 +179,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
-            R.id.action_settings -> return true
+            R.id.action_settings -> {
+                startActivity(Intent(this@MainActivity, SettingsActivity::class.java))
+                return true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
@@ -191,7 +199,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 intent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
                 intent.putExtra(Intent.EXTRA_TEXT, "Google Play: https://play.google.com/store/apps/details?id=" + packageName)
                 intent.type = "text/plain"
-                startActivity(Intent.createChooser(intent, "Share..."))
+                startActivity(Intent.createChooser(intent, resources.getString(R.string.share) + "..."))
             }
             R.id.nav_buy -> {
 
@@ -209,7 +217,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val rotation = windowManager.defaultDisplay.rotation
 
                     recorder.init(
-                            outputFile = DEFAULT_FILE_NAME + dateFormat.format(Date()) + "." + (if (Core.outputFormat == MediaRecorder.OutputFormat.THREE_GPP) "3gp" else "mp4"),
+                            outputFile = Core.getFileNamePrefix() + Core.formatDateForFileName(Date()) + "." + (if (Core.getOutputFormat() == MediaRecorder.OutputFormat.THREE_GPP) "3gp" else "mp4"),
                             videoSizeWidth = displayMetrics.widthPixels,
                             videoSizeHeight = displayMetrics.heightPixels,
                             rotation = rotation)

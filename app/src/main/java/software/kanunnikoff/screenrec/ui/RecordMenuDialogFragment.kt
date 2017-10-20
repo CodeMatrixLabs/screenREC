@@ -1,7 +1,6 @@
 package software.kanunnikoff.screenrec.ui
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -23,15 +22,17 @@ import java.io.File
 /**
  * Created by dmitry on 20/10/2017.
  */
-class MenuDialogFragment() : DialogFragment() {
+class RecordMenuDialogFragment() : DialogFragment() {
     val images = arrayOf(R.drawable.ic_edit_white_24px, R.drawable.ic_play_arrow_white_24px, R.drawable.ic_share_white_24px, R.drawable.ic_delete_white_24px)
     var record: Record? = null
     var onDelete: (() -> Unit)? = null
+    var onRename: (() -> Unit)? = null
 
     @SuppressLint("ValidFragment")
-    constructor(record: Record, onDelete: () -> Unit) : this() {
+    constructor(record: Record, onDelete: () -> Unit, onRename: () -> Unit) : this() {
         this.record = record
         this.onDelete = onDelete
+        this.onRename = onRename
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -57,15 +58,15 @@ class MenuDialogFragment() : DialogFragment() {
         }
 
         val builder = AlertDialog.Builder(activity, R.style.MyDialogTheme)
-        builder.setTitle(null).setAdapter(adapter, DialogInterface.OnClickListener { _, which ->
+        builder.setTitle(null).setAdapter(adapter, { _, which ->
             when (which) {
                 RENAME_ITEM -> {
-
+                    onRename?.invoke()
                 }
 
                 PLAY_ITEM -> {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(record!!.outputFile))
-                    intent.setDataAndType(Uri.parse(record!!.outputFile), "video/mp4")
+                    intent.setDataAndType(Uri.parse(record!!.outputFile), if (record!!.outputFile.endsWith("mp4")) "video/mp4" else "video/3gp")
                     startActivity(intent)
                 }
 
@@ -75,7 +76,7 @@ class MenuDialogFragment() : DialogFragment() {
                     intent.putExtra(Intent.EXTRA_SUBJECT, record!!.title)
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(record!!.outputFile)))
                     intent.type = "text/plain"
-                    startActivity(Intent.createChooser(intent, "Share..."))
+                    startActivity(Intent.createChooser(intent, activity.resources.getString(R.string.share) + "..."))
                 }
 
                 DELETE_ITEM -> {
@@ -88,7 +89,7 @@ class MenuDialogFragment() : DialogFragment() {
     }
 
     companion object {
-        const val TAG = "menu_dialog"
+        const val TAG = "RecordMenuDialogFragment"
         const val RENAME_ITEM = 0
         const val PLAY_ITEM = 1
         const val SHARE_ITEM = 2

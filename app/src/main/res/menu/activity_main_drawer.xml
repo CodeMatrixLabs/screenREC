@@ -7,19 +7,19 @@
         <item
             android:id="@+id/nav_rate"
             android:icon="@drawable/ic_grade_black_24px"
-            android:title="Rate" />
+            android:title="@string/rate" />
         <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_menu_share"
-            android:title="Share" />
+            android:title="@string/share" />
     </group>
 
-    <item android:title="Remove Ads">
+    <item android:title="@string/remove_ads">
         <menu>
             <item
                 android:id="@+id/nav_buy"
                 android:icon="@drawable/ic_shopping_cart_black_24px"
-                android:title="Buy" />
+                android:title="@string/buy" />
         </menu>
     </item>
 

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_basic_title"
+        android:key="pref_key_basic">
+
+        <EditTextPreference
+            android:key="pref_key_file_name_prefix"
+            android:title="@string/pref_file_name_prefix_title"
+            android:summary="@string/pref_file_name_prefix_summary"
+            android:defaultValue="screenrec" />
+
+        <EditTextPreference
+            android:key="pref_key_record_title_prefix"
+            android:title="@string/pref_record_title_prefix_title"
+            android:summary="@string/pref_record_title_prefix_summary"
+            android:defaultValue="@string/record" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_recorder_title"
+        android:key="pref_key_recorder">
+
+        <ListPreference
+            android:key="pref_key_output_format"
+            android:title="@string/pref_output_format_title"
+            android:summary="@string/pref_output_format_summary"
+            android:dialogTitle="@string/pref_choose_output_format_dialog_title"
+            android:entries="@array/pref_output_format_titles"
+            android:entryValues="@array/pref_output_format_values"
+            android:defaultValue="0" />
+
+        <ListPreference
+            android:key="pref_key_audio_encoder"
+            android:title="@string/pref_audio_encoder_title"
+            android:summary="@string/pref_audio_encoder_summary"
+            android:dialogTitle="@string/pref_choose_audio_encoder_dialog_title"
+            android:entries="@array/pref_audio_encoder_titles"
+            android:entryValues="@array/pref_audio_encoder_values"
+            android:defaultValue="0" />
+
+        <EditTextPreference
+            android:key="pref_key_audio_encoding_bit_rate"
+            android:title="@string/pref_audio_encoding_bit_rate_title"
+            android:summary="@string/pref_audio_encoding_bit_rate_summary"
+            android:defaultValue="16000" />
+
+        <EditTextPreference
+            android:key="pref_key_audio_sampling_rate"
+            android:title="@string/pref_audio_sampling_rate_title"
+            android:summary="@string/pref_audio_sampling_rate_summary"
+            android:defaultValue="96000" />
+
+        <ListPreference
+            android:key="pref_key_audio_channels"
+            android:title="@string/pref_audio_channels_title"
+            android:summary="@string/pref_audio_channels_summary"
+            android:dialogTitle="@string/pref_choose_audio_channels_dialog_title"
+            android:entries="@array/pref_audio_channels_titles"
+            android:entryValues="@array/pref_audio_channels_values"
+            android:defaultValue="1" />
+
+        <ListPreference
+            android:key="pref_key_video_encoder"
+            android:title="@string/pref_video_encoder_title"
+            android:summary="@string/pref_video_encoder_summary"
+            android:dialogTitle="@string/pref_choose_video_encoder_dialog_title"
+            android:entries="@array/pref_video_encoder_titles"
+            android:entryValues="@array/pref_video_encoder_values"
+            android:defaultValue="0" />
+
+        <EditTextPreference
+            android:key="pref_key_video_encoding_bit_rate"
+            android:title="@string/pref_video_encoding_bit_rate_title"
+            android:summary="@string/pref_video_encoding_bit_rate_summary"
+            android:defaultValue="3000000" />
+
+        <EditTextPreference
+            android:key="pref_key_video_frame_rate"
+            android:title="@string/pref_video_frame_rate_title"
+            android:summary="@string/pref_video_frame_rate_summary"
+            android:defaultValue="30" />
+
+        <EditTextPreference
+            android:key="pref_key_video_size_width"
+            android:title="@string/pref_video_size_width_title"
+            android:summary="@string/pref_video_size_width_summary"
+            android:defaultValue="480" />
+
+        <EditTextPreference
+            android:key="pref_key_video_size_height"
+            android:title="@string/pref_video_size_height_title"
+            android:summary="@string/pref_video_size_height_summary"
+            android:defaultValue="800" />>
+
+    </PreferenceCategory>
+</PreferenceScreen>

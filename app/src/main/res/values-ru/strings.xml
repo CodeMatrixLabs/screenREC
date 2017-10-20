@@ -5,8 +5,58 @@
     <string name="stop_recording_action">Остановить запись</string>
     <string name="notification_body">Запись…</string>
 
+    <string name="all_records_tab">Все</string>
+    <string name="favored_records_tab">Избранное</string>
+
     <string name="rename">Переименовать</string>
     <string name="play">Воспроизвести</string>
     <string name="share">Поделиться</string>
     <string name="delete">Удалить</string>
+
+    <string name="dialog_delete_record">Удалить эту запись?</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="enter_new_title">Введите новое название</string>
+    <string name="field_must_not_be_empty">Поле ввода не должно быть пустым!</string>
+    <string name="record">Запись</string>
+
+    <string name="mb">мб</string>
+    <string name="kb">кб</string>
+    <string name="b">б</string>
+
+    <string name="h">ч</string>
+    <string name="m">м</string>
+    <string name="s">с</string>
+
+    <string name="rate">Оценить</string>
+    <string name="remove_ads">Убрать рекламу</string>
+    <string name="buy">Купить</string>
+    <string name="pref_basic_title">Основное</string>
+    <string name="pref_file_name_prefix_title">Префикс имени файла</string>
+    <string name="pref_file_name_prefix_summary">Префикс имени файла для записи на файловой системе устройства</string>
+    <string name="pref_record_title_prefix_title">Префикс названия записи</string>
+    <string name="pref_record_title_prefix_summary">Префикс названия записи в списке</string>
+    <string name="pref_recorder_title">Записыватель</string>
+    <string name="pref_output_format_title">Выходной формат</string>
+    <string name="title_activity_settings">Настройки</string>
+    <string name="pref_choose_output_format_dialog_title">Выберите формат</string>
+    <string name="pref_audio_encoder_title">Аудиокодер</string>
+    <string name="pref_choose_audio_encoder_dialog_title">Выберите кодер</string>
+    <string name="pref_audio_encoding_bit_rate_title">Битовая скорость кодирования аудио</string>
+    <string name="pref_audio_encoding_bit_rate_summary">Выберите подходящую битовую скорость кодирования</string>
+    <string name="pref_audio_sampling_rate_title">Частота дискретизации аудио</string>
+    <string name="pref_audio_sampling_rate_summary">Выберите подходящую частоту дискретизации</string>
+    <string name="pref_audio_channels_title">Аудио-каналы</string>
+    <string name="pref_audio_channels_summary">Моно, Стерео</string>
+    <string name="pref_choose_audio_channels_dialog_title">Выберите каналы</string>
+    <string name="pref_video_encoder_title">Видеокодер</string>
+    <string name="pref_choose_video_encoder_dialog_title">Выберите кодер</string>
+    <string name="pref_video_encoding_bit_rate_title">Битовая скорость кодирования видео</string>
+    <string name="pref_video_encoding_bit_rate_summary">Выберите подходящую битовую скорость кодирования</string>
+    <string name="pref_video_frame_rate_title">Частота кадров видео</string>
+    <string name="pref_video_frame_rate_summary">Выберите подходящую частоту кадров</string>
+    <string name="pref_video_size_width_title">Ширина видео</string>
+    <string name="pref_video_size_width_summary">Выберите подходящую ширину</string>
+    <string name="pref_video_size_height_title">Высота видео</string>
+    <string name="pref_video_size_height_summary">Выберите подходящую высоту</string>
 </resources>

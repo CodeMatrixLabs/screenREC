@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.media.MediaRecorder
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-import android.util.Log
 import android.view.Gravity
 import android.widget.ImageView
 import android.widget.Toast
@@ -20,6 +19,9 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import android.preference.PreferenceManager
+import android.util.Log
+
 
 @SuppressLint("StaticFieldLeak")
 /**
@@ -29,16 +31,20 @@ object Core {
     const val APP_TAG = "screenREC"
     const val STOP_RECORDING_ACTION = "stop_recording"
     private const val RECORD_NUMBER = "record_number"
-    private const val COLUMN_OUTPUT_FORMAT = "output_format"
-    private const val COLUMN_AUDIO_ENCODER = "audio_encoder"
-    private const val COLUMN_AUDIO_ENCODING_BIT_RATE = "audio_encoding_bit_rate"
-    private const val COLUMN_AUDIO_SAMPLING_RATE = "audio_sampling_rate"
-    private const val COLUMN_AUDIO_CHANNELS = "audio_channels"
-    private const val COLUMN_VIDEO_ENCODER = "video_encoder"
-    private const val COLUMN_VIDEO_ENCODING_BIT_RATE = "video_encoding_bit_rate"
-    private const val COLUMN_VIDEO_FRAME_RATE = "video_frame_rate"
-    private const val COLUMN_VIDEO_SIZE_WIDTH = "video_size_width"
-    private const val COLUMN_VIDEO_SIZE_HEIGHT = "video_size_height"
+    private const val COLUMN_FILE_NAME_PREFIX = "pref_key_file_name_prefix"
+    private const val COLUMN_RECORD_TITLE_PREFIX = "pref_key_record_title_prefix"
+    private const val COLUMN_OUTPUT_FORMAT = "pref_key_output_format"
+    private const val COLUMN_AUDIO_ENCODER = "pref_key_audio_encoder"
+    private const val COLUMN_AUDIO_ENCODING_BIT_RATE = "pref_key_audio_encoding_bit_rate"
+    private const val COLUMN_AUDIO_SAMPLING_RATE = "pref_key_audio_sampling_rate"
+    private const val COLUMN_AUDIO_CHANNELS = "pref_key_audio_channels"
+    private const val COLUMN_VIDEO_ENCODER = "pref_key_video_encoder"
+    private const val COLUMN_VIDEO_ENCODING_BIT_RATE = "pref_key_video_encoding_bit_rate"
+    private const val COLUMN_VIDEO_FRAME_RATE = "pref_key_video_frame_rate"
+    private const val COLUMN_VIDEO_SIZE_WIDTH = "pref_key_video_size_width"
+    private const val COLUMN_VIDEO_SIZE_HEIGHT = "pref_key_video_size_height"
+
+    const val DEFAULT_FILE_NAME = "screenrec"
 
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null
@@ -102,10 +108,11 @@ object Core {
 
     fun deleteRecord(record: Record) {
         sqliteStorage?.deleteRecord(record)
+        File(record.outputFile).delete()
+    }
 
-        if (true) {   // todo
-            File(record.outputFile).delete()
-        }
+    fun renameRecord(record: Record, title: String) {
+        sqliteStorage!!.renameRecord(record, title)
     }
 
     fun loadBitmap(url: String, imageView: ImageView) {
@@ -136,88 +143,68 @@ object Core {
             editor.apply()
         }
 
-    var outputFormat: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_OUTPUT_FORMAT, MediaRecorder.OutputFormat.MPEG_4)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_OUTPUT_FORMAT, value)
-            editor.apply()
-        }
+    fun getFileNamePrefix(): String {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_FILE_NAME_PREFIX, "")
+    }
 
-    var audioEncoder: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_AUDIO_ENCODER, MediaRecorder.AudioEncoder.AMR_NB)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_AUDIO_ENCODER, value)
-            editor.apply()
-        }
+    fun getRecordTitlePrefix(): String {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_RECORD_TITLE_PREFIX, "")
+    }
 
-    var audioEncodingBitRate: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_AUDIO_ENCODING_BIT_RATE, 16000)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_AUDIO_ENCODING_BIT_RATE, value)
-            editor.apply()
-        }
+    fun getOutputFormat(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_OUTPUT_FORMAT, "-1").toInt()
+    }
 
-    var audioSamplingRate: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_AUDIO_SAMPLING_RATE, 96000)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_AUDIO_SAMPLING_RATE, value)
-            editor.apply()
-        }
+    fun getAudioEncoder(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_AUDIO_ENCODER, "-1").toInt()
+    }
 
-    var audioChannels: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_AUDIO_CHANNELS, MyMediaRecorder.AudioChannels.STEREO)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_AUDIO_CHANNELS, value)
-            editor.apply()
-        }
+    fun getAudioEncodingBitRate(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_AUDIO_ENCODING_BIT_RATE, "-1").toInt()
+    }
 
-    var videoEncoder: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_VIDEO_ENCODER, MediaRecorder.VideoEncoder.H264)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_VIDEO_ENCODER, value)
-            editor.apply()
-        }
+    fun getAudioSamplingRate(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_AUDIO_SAMPLING_RATE, "-1").toInt()
+    }
 
-    var videoEncodingBitRate: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_VIDEO_ENCODING_BIT_RATE, 3000000)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_VIDEO_ENCODING_BIT_RATE, value)
-            editor.apply()
-        }
+    fun getAudioChannels(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_AUDIO_CHANNELS, "-1").toInt()
+    }
 
-    var videoFrameRate: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_VIDEO_FRAME_RATE, 30)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_VIDEO_FRAME_RATE, value)
-            editor.apply()
-        }
+    fun getVideoEncoder(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_VIDEO_ENCODER, "-1").toInt()
+    }
 
-    var videoSizeWidth: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_VIDEO_SIZE_WIDTH, 480)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_VIDEO_SIZE_WIDTH, value)
-            editor.apply()
-        }
+    fun getVideoEncodingBitRate(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_VIDEO_ENCODING_BIT_RATE, "-1").toInt()
+    }
 
-    var videoSizeHeight: Int
-        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(COLUMN_VIDEO_SIZE_HEIGHT, 800)
-        set(value) {
-            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
-            editor.putInt(COLUMN_VIDEO_SIZE_HEIGHT, value)
-            editor.apply()
-        }
+    fun getVideoFrameRate(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_VIDEO_FRAME_RATE, "-1").toInt()
+    }
+
+    fun getVideoSizeWidth(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_VIDEO_SIZE_WIDTH, "-1").toInt()
+    }
+
+    fun getVideoSizeHeight(): Int {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return preferences.getString(COLUMN_VIDEO_SIZE_HEIGHT, "-1").toInt()
+    }
 
     fun outputFormatString(): String {
-        return when (outputFormat) {
+        return when (getOutputFormat()) {
             MediaRecorder.OutputFormat.THREE_GPP -> "3GPP"
             MediaRecorder.OutputFormat.MPEG_4 -> "MPEG4"
             else -> "Default"
@@ -225,7 +212,7 @@ object Core {
     }
 
     fun audioEncoderString(): String {
-        return when (audioEncoder) {
+        return when (getAudioEncoder()) {
             MediaRecorder.AudioEncoder.AMR_NB -> "AMR (Narrowband)"
             MediaRecorder.AudioEncoder.AMR_WB -> "AMR (Wideband)"
             MediaRecorder.AudioEncoder.AAC -> "AAC Low Complexity (AAC-LC)"
@@ -237,14 +224,14 @@ object Core {
     }
 
     fun audioChannelsString(): String {
-        return when (audioChannels) {
+        return when (getAudioChannels()) {
             MyMediaRecorder.AudioChannels.MONO -> "Mono"
             else -> "Stereo"
         }
     }
 
     fun videoEncoderString(): String {
-        return when (videoEncoder) {
+        return when (getVideoEncoder()) {
             MediaRecorder.VideoEncoder.H263 -> "H263"
             MediaRecorder.VideoEncoder.H264 -> "H264"
             MediaRecorder.VideoEncoder.MPEG_4_SP -> "MPEG4 SP"
@@ -255,10 +242,39 @@ object Core {
     }
 
     fun formatDate(date: Long): String {
-        return if (android.text.format.DateFormat.is24HourFormat(context)) {
+        var result = if (android.text.format.DateFormat.is24HourFormat(context)) {
             SimpleDateFormat("dd, MMMM yyyy, HH:mm:ss", Locale.getDefault()).format(date)
         } else {
             SimpleDateFormat("dd, MMMM yyyy, hh:mm:ss a", Locale.getDefault()).format(date)
+        }
+
+        for ((k, v) in rusMonths) {
+            result = result.replace(k, v)
+        }
+
+        return result
+    }
+
+    private val rusMonths = mapOf(
+            "января" to "Январь",
+            "февраля" to "Февраль",
+            "марта" to "Март",
+            "апреля" to "Апрель",
+            "мая" to "Май",
+            "июня" to "Июнь",
+            "июля" to "Июль",
+            "августа" to "Август",
+            "сентября" to "Сентябрь",
+            "октября" to "Октябрь",
+            "ноября" to "Ноябрь",
+            "декабря" to "Декабрь"
+    )
+
+    fun formatDateForFileName(date: Date): String {
+        return if (android.text.format.DateFormat.is24HourFormat(context)) {
+            SimpleDateFormat("_yyyyMMdd_HHmmss", Locale.getDefault()).format(date)
+        } else {
+            SimpleDateFormat("_yyyyMMdd_hhmmss_a", Locale.getDefault()).format(date)
         }
     }
 
@@ -270,14 +286,14 @@ object Core {
         var result = ""
 
         if (hour > 0) {
-            result += hour.toString() + "h "
+            result += hour.toString() + context?.getString(R.string.h) + " "
         }
 
         if (minute > 0) {
-            result += minute.toString() + "m "
+            result += minute.toString() + context?.getString(R.string.m) + " "
         }
 
-        result += second.toString() + "s"
+        result += second.toString() + context?.getString(R.string.s)
 
         return result
     }
