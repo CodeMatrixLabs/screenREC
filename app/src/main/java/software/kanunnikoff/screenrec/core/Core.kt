@@ -20,7 +20,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import android.preference.PreferenceManager
-import android.util.Log
 
 
 @SuppressLint("StaticFieldLeak")
@@ -43,8 +42,7 @@ object Core {
     private const val COLUMN_VIDEO_FRAME_RATE = "pref_key_video_frame_rate"
     private const val COLUMN_VIDEO_SIZE_WIDTH = "pref_key_video_size_width"
     private const val COLUMN_VIDEO_SIZE_HEIGHT = "pref_key_video_size_height"
-
-    const val DEFAULT_FILE_NAME = "screenrec"
+    private const val IS_FIRST_LAUNCH = "is_first_launch"
 
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null
@@ -143,6 +141,14 @@ object Core {
             editor.apply()
         }
 
+    var isFirstLaunch: Boolean
+        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getBoolean(IS_FIRST_LAUNCH, true)
+        set(value) {
+            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
+            editor.putBoolean(IS_FIRST_LAUNCH, value)
+            editor.apply()
+        }
+
     fun getFileNamePrefix(): String {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_FILE_NAME_PREFIX, "")
@@ -158,9 +164,21 @@ object Core {
         return preferences.getString(COLUMN_OUTPUT_FORMAT, "-1").toInt()
     }
 
+    fun setOutputFormat(format: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_OUTPUT_FORMAT, format.toString())
+        editor.apply()
+    }
+
     fun getAudioEncoder(): Int {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_AUDIO_ENCODER, "-1").toInt()
+    }
+
+    fun setAudioEncoder(encoder: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_AUDIO_ENCODER, encoder.toString())
+        editor.apply()
     }
 
     fun getAudioEncodingBitRate(): Int {
@@ -168,9 +186,21 @@ object Core {
         return preferences.getString(COLUMN_AUDIO_ENCODING_BIT_RATE, "-1").toInt()
     }
 
+    fun setAudioEncodingBitRate(rate: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_AUDIO_ENCODING_BIT_RATE, rate.toString())
+        editor.apply()
+    }
+
     fun getAudioSamplingRate(): Int {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_AUDIO_SAMPLING_RATE, "-1").toInt()
+    }
+
+    fun setAudioSamplingRate(rate: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_AUDIO_SAMPLING_RATE, rate.toString())
+        editor.apply()
     }
 
     fun getAudioChannels(): Int {
@@ -178,9 +208,21 @@ object Core {
         return preferences.getString(COLUMN_AUDIO_CHANNELS, "-1").toInt()
     }
 
+    fun setAudioChannels(channels: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_AUDIO_CHANNELS, channels.toString())
+        editor.apply()
+    }
+
     fun getVideoEncoder(): Int {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_VIDEO_ENCODER, "-1").toInt()
+    }
+
+    fun setVideoEncoder(encoder: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_VIDEO_ENCODER, encoder.toString())
+        editor.apply()
     }
 
     fun getVideoEncodingBitRate(): Int {
@@ -188,9 +230,21 @@ object Core {
         return preferences.getString(COLUMN_VIDEO_ENCODING_BIT_RATE, "-1").toInt()
     }
 
+    fun setVideoEncodingBitRate(rate: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_VIDEO_ENCODING_BIT_RATE, rate.toString())
+        editor.apply()
+    }
+
     fun getVideoFrameRate(): Int {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_VIDEO_FRAME_RATE, "-1").toInt()
+    }
+
+    fun setVideoFrameRate(rate: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_VIDEO_FRAME_RATE, rate.toString())
+        editor.apply()
     }
 
     fun getVideoSizeWidth(): Int {
@@ -198,9 +252,21 @@ object Core {
         return preferences.getString(COLUMN_VIDEO_SIZE_WIDTH, "-1").toInt()
     }
 
+    fun setVideoSizeWidth(width: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_VIDEO_SIZE_WIDTH, width.toString())
+        editor.apply()
+    }
+
     fun getVideoSizeHeight(): Int {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         return preferences.getString(COLUMN_VIDEO_SIZE_HEIGHT, "-1").toInt()
+    }
+
+    fun setVideoSizeHeight(height: Int) {
+        val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
+        editor.putString(COLUMN_VIDEO_SIZE_HEIGHT, height.toString())
+        editor.apply()
     }
 
     fun outputFormatString(): String {

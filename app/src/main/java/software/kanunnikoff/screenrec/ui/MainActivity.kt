@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.app_bar_main.*
 import software.kanunnikoff.screenrec.core.MyMediaRecorder
 import android.util.DisplayMetrics
 import software.kanunnikoff.screenrec.core.MyMediaProjection
-import java.text.SimpleDateFormat
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import software.kanunnikoff.screenrec.core.PermissionManager
@@ -23,6 +22,7 @@ import software.kanunnikoff.screenrec.core.PermissionManager.PERMISSIONS_CODE
 import java.util.*
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -36,7 +36,6 @@ import android.support.v4.view.ViewPager
 import android.util.Log
 import software.kanunnikoff.screenrec.R
 import software.kanunnikoff.screenrec.core.Core
-import software.kanunnikoff.screenrec.core.Core.DEFAULT_FILE_NAME
 import software.kanunnikoff.screenrec.model.Record
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -105,9 +104,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         )
 
                 record.id = Core.insertRecord(record)
-                Log.i(Core.APP_TAG, "*** allRecordsSubFragment = $allRecordsSubFragment")
-                Log.i(Core.APP_TAG, "*** allRecordsSubFragment.adapter = ${allRecordsSubFragment.adapter}")
-                Log.i(Core.APP_TAG, "*** allRecordsSubFragment.adapter?.records = ${allRecordsSubFragment.adapter?.records}")
                 allRecordsSubFragment.adapter!!.records.add(0, record)
                 allRecordsSubFragment.adapter?.notifyDataSetChanged()
                 Core.recordNumber++
@@ -158,6 +154,26 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         Core.init(this)
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false)
+
+        if (Core.isFirstLaunch) {
+            if (CamcorderProfile.hasProfile(CamcorderProfile.QUALITY_HIGH)) {
+                val profile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH)
+
+                Core.setVideoFrameRate(profile.videoFrameRate)
+                Core.setVideoEncodingBitRate(profile.videoBitRate)
+                Core.setVideoEncoder(profile.videoCodec)
+                Core.setAudioChannels(profile.audioChannels)
+                Core.setAudioSamplingRate(profile.audioSampleRate)
+                Core.setAudioEncodingBitRate(profile.audioBitRate)
+                Core.setAudioEncoder(profile.audioCodec)
+                Core.setOutputFormat(profile.fileFormat)
+            }
+
+            Core.setVideoSizeWidth(displayMetrics.widthPixels)
+            Core.setVideoSizeHeight(displayMetrics.heightPixels)
+
+            Core.isFirstLaunch = false
+        }
     }
 
     override fun onBackPressed() {
@@ -217,9 +233,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     val rotation = windowManager.defaultDisplay.rotation
 
                     recorder.init(
+                            outputFormat = Core.getOutputFormat(),
                             outputFile = Core.getFileNamePrefix() + Core.formatDateForFileName(Date()) + "." + (if (Core.getOutputFormat() == MediaRecorder.OutputFormat.THREE_GPP) "3gp" else "mp4"),
-                            videoSizeWidth = displayMetrics.widthPixels,
-                            videoSizeHeight = displayMetrics.heightPixels,
+                            audioEncoder = Core.getAudioEncoder(),
+                            audioEncodingBitRate = Core.getAudioEncodingBitRate(),
+                            audioSamplingRate = Core.getAudioSamplingRate(),
+                            audioChannels = Core.getAudioChannels(),
+                            videoEncoder = Core.getVideoEncoder(),
+                            videoEncodingBitRate = Core.getVideoEncodingBitRate(),
+                            videoFrameRate = Core.getVideoFrameRate(),
+                            videoSizeWidth = Core.getVideoSizeWidth(),
+                            videoSizeHeight = Core.getVideoSizeHeight(),
                             rotation = rotation)
 
                     projection.init(this, displayMetrics, recorder, resultCode, data)
