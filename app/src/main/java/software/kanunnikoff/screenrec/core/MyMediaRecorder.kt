@@ -17,6 +17,9 @@ class MyMediaRecorder {
     private var recorder: MediaRecorder? = null
     private var dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES), APP_TAG)
     private val ORIENTATIONS = SparseIntArray()
+    var outputFileAbsolutePath: String = ""
+    var duration: Long = 0L
+    var date: Long = 0L
 
     init {
         ORIENTATIONS.append(Surface.ROTATION_0, 90)
@@ -28,12 +31,12 @@ class MyMediaRecorder {
     fun init(
             outputFormat: Int = MediaRecorder.OutputFormat.MPEG_4,
             outputFile: String,
-            audioEncoder: Int = MediaRecorder.AudioEncoder.AAC,
+            audioEncoder: Int = MediaRecorder.AudioEncoder.AMR_NB,
             audioEncodingBitRate: Int = 16000,
             audioSamplingRate: Int = 96000,   // 96 kHz
             audioChannels: Int = AudioChannels.MONO,
             videoEncoder: Int = MediaRecorder.VideoEncoder.H264,
-            videoEncodingBitRate: Int = 1000000,
+            videoEncodingBitRate: Int = 3000000,
             videoFrameRate: Int = 30,
             videoSizeWidth: Int = 480,
             videoSizeHeight: Int = 800,
@@ -54,7 +57,8 @@ class MyMediaRecorder {
         recorder?.setVideoSource(MediaRecorder.VideoSource.SURFACE)
 
         recorder?.setOutputFormat(outputFormat)
-        recorder?.setOutputFile(dir.absolutePath + File.separator + outputFile)
+        outputFileAbsolutePath = dir.absolutePath + File.separator + outputFile
+        recorder?.setOutputFile(outputFileAbsolutePath)
 
         recorder?.setAudioEncoder(audioEncoder)
         recorder?.setAudioEncodingBitRate(audioEncodingBitRate)
@@ -79,12 +83,14 @@ class MyMediaRecorder {
     }
 
     fun start() {
+        date = System.currentTimeMillis()
         recorder?.start()
     }
 
     fun stop() {
         recorder?.stop()
         recorder?.release()
+        duration = System.currentTimeMillis() - date
     }
 
     @TargetApi(Build.VERSION_CODES.N)

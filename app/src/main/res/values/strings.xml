@@ -9,4 +9,13 @@
     <string name="permissions_message">For correct video recording we need to get permissions to record audio and to write to external storage.</string>
     <string name="stop_recording_action">Stop recording</string>
     <string name="notification_body">Recording…</string>
+
+    <string name="all_records_tab">All</string>
+    <string name="favored_records_tab">Favored</string>
+
+    <string name="rename">Rename</string>
+    <string name="play">Play</string>
+    <string name="share">Share</string>
+    <string name="delete">Delete</string>
+
 </resources>

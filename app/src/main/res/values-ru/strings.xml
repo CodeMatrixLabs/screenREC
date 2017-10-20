@@ -4,4 +4,9 @@
     <string name="permissions_message">Для правильной видеозаписи нам необходимо получить разрешения на запись звука и запись на внешнее хранилище.</string>
     <string name="stop_recording_action">Остановить запись</string>
     <string name="notification_body">Запись…</string>
+
+    <string name="rename">Переименовать</string>
+    <string name="play">Воспроизвести</string>
+    <string name="share">Поделиться</string>
+    <string name="delete">Удалить</string>
 </resources>
