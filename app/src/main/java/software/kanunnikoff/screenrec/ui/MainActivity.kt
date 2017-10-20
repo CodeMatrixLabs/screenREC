@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 projection.stop()
                 isRecording = false
                 fab.setImageDrawable(resources.getDrawable(R.drawable.ic_fiber_manual_record_white_24px))
+                Core.hideNotifications()
 
                 val size: String
                 var length = File(recorder.outputFileAbsolutePath).length() / 1024 / 1024   // megabytes
@@ -250,6 +251,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     recorder.start()
                     isRecording = true
                     fab.setImageDrawable(resources.getDrawable(R.drawable.ic_stop_white_24px))
+                    Core.showNotification(resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
                 }
             }
         }
@@ -268,25 +270,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNewIntent(intent: Intent?) {
         val stopRecording = intent?.extras?.getBoolean(Core.STOP_RECORDING_ACTION)
 
+        Log.i(Core.APP_TAG, "*** stopRecording = $stopRecording")
+
         if (stopRecording != null && stopRecording) {
+            Log.i(Core.APP_TAG, "*** clicked")
             fab.performClick()
         } else {
             super.onNewIntent(intent)
         }
     }
 
-    override fun onPause() {
-        if (isRecording) {
-            Core.showNotification(resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
-        }
-
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Core.hideNotifications()
-    }
+//    override fun onPause() {
+//        if (isRecording) {
+//            Core.showNotification(resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
+//        }
+//
+//        super.onPause()
+//    }
+//
+//    override fun onResume() {
+//        super.onResume()
+//        Core.hideNotifications()
+//    }
 
     private inner class MyPagerAdapter internal constructor(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 

@@ -62,20 +62,19 @@ object Core {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val notificationBuilder = NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(header)
                 .setContentText(body)
-                .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setUsesChronometer(true)
 
         val stopRecordingAction = Intent(context, MainActivity::class.java)
-        stopRecordingAction.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        stopRecordingAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         stopRecordingAction.putExtra(Core.STOP_RECORDING_ACTION, true)
-        notificationBuilder.addAction(0, context!!.resources.getString(R.string.stop_recording_action), PendingIntent.getActivity(context, 0, stopRecordingAction, 0))
+        notificationBuilder.addAction(0, context!!.resources.getString(R.string.stop_recording_action), PendingIntent.getActivity(context, 0, stopRecordingAction, PendingIntent.FLAG_UPDATE_CURRENT))
 
         NotificationManagerCompat.from(context).notify(1, notificationBuilder.build())
     }
