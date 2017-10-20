@@ -59,4 +59,7 @@
     <string name="pref_video_size_width_summary">Выберите подходящую ширину</string>
     <string name="pref_video_size_height_title">Высота видео</string>
     <string name="pref_video_size_height_summary">Выберите подходящую высоту</string>
+    <string name="video_size">Размер видео</string>
+    <string name="audio_channels_mono">Моно</string>
+    <string name="audio_channels_stereo">Стерео</string>
 </resources>

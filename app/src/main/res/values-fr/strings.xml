@@ -52,4 +52,7 @@
     <string name="pref_video_size_height_title">Hauteur vidéo</string>
     <string name="pref_video_size_height_summary">Choisissez la hauteur appropriée</string>
     <string name="title_activity_settings">Paramètres</string>
+    <string name="video_size">Taille de la vidéo</string>
+    <string name="audio_channels_stereo">Stéréo</string>
+    <string name="audio_channels_mono">Mono</string>
 </resources>

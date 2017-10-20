@@ -225,8 +225,8 @@ object Core {
 
     fun audioChannelsString(): String {
         return when (getAudioChannels()) {
-            MyMediaRecorder.AudioChannels.MONO -> "Mono"
-            else -> "Stereo"
+            MyMediaRecorder.AudioChannels.MONO -> context!!.resources.getString(R.string.audio_channels_mono)
+            else -> context!!.resources.getString(R.string.audio_channels_stereo)
         }
     }
 

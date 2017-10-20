@@ -28,7 +28,7 @@
             android:dialogTitle="@string/pref_choose_output_format_dialog_title"
             android:entries="@array/pref_output_format_titles"
             android:entryValues="@array/pref_output_format_values"
-            android:defaultValue="0" />
+            android:defaultValue="2" />
 
         <ListPreference
             android:key="pref_key_audio_encoder"
@@ -37,7 +37,7 @@
             android:dialogTitle="@string/pref_choose_audio_encoder_dialog_title"
             android:entries="@array/pref_audio_encoder_titles"
             android:entryValues="@array/pref_audio_encoder_values"
-            android:defaultValue="0" />
+            android:defaultValue="2" />
 
         <EditTextPreference
             android:key="pref_key_audio_encoding_bit_rate"
@@ -67,7 +67,7 @@
             android:dialogTitle="@string/pref_choose_video_encoder_dialog_title"
             android:entries="@array/pref_video_encoder_titles"
             android:entryValues="@array/pref_video_encoder_values"
-            android:defaultValue="0" />
+            android:defaultValue="2" />
 
         <EditTextPreference
             android:key="pref_key_video_encoding_bit_rate"

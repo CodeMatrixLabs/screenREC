@@ -52,12 +52,10 @@
     <string name="pref_output_format_summary" translatable="false">3GPP, MPEG 4</string>
     <string name="pref_choose_output_format_dialog_title">Choose format</string>
     <string-array name="pref_output_format_titles">
-        <item>Default</item>
         <item>3GPP</item>
         <item>MPEG 4</item>
     </string-array>
     <string-array name="pref_output_format_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
@@ -66,7 +64,6 @@
     <string name="pref_audio_encoder_summary" translatable="false">AMR, AAC, ..</string>
     <string name="pref_choose_audio_encoder_dialog_title">Choose encoder</string>
     <string-array name="pref_audio_encoder_titles">
-        <item>Default</item>
         <item>AMR (Narrowband)</item>
         <item>AMR (Wideband)</item>
         <item>AAC Low Complexity (AAC-LC)</item>
@@ -75,7 +72,6 @@
         <item>Ogg Vorbis</item>
     </string-array>
     <string-array name="pref_audio_encoder_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -106,7 +102,6 @@
     <string name="pref_video_encoder_summary" translatable="false">H264, VP8, ..</string>
     <string name="pref_choose_video_encoder_dialog_title">Choose encoder</string>
     <string-array name="pref_video_encoder_titles">
-        <item>Default</item>
         <item>H263</item>
         <item>H264</item>
         <item>MPEG4 SP</item>
@@ -114,7 +109,6 @@
         <item>HEVC</item>
     </string-array>
     <string-array name="pref_video_encoder_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -135,5 +129,10 @@
     <string name="pref_video_size_height_summary">Choose appropriate height</string>
 
     <string name="title_activity_settings">Settings</string>
+
+    <string name="video_size">Video size</string>
+
+    <string name="audio_channels_mono">Mono</string>
+    <string name="audio_channels_stereo">Stereo</string>
 
 </resources>
