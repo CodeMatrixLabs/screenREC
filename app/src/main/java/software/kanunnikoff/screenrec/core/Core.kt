@@ -1,12 +1,12 @@
 package software.kanunnikoff.screenrec.core
 
 import android.annotation.SuppressLint
+import android.app.Notification
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaRecorder
-import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.view.Gravity
 import android.widget.ImageView
@@ -20,6 +20,10 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import android.preference.PreferenceManager
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import android.os.Build
+
 
 
 @SuppressLint("StaticFieldLeak")
@@ -43,6 +47,7 @@ object Core {
     private const val COLUMN_VIDEO_SIZE_WIDTH = "pref_key_video_size_width"
     private const val COLUMN_VIDEO_SIZE_HEIGHT = "pref_key_video_size_height"
     private const val IS_FIRST_LAUNCH = "is_first_launch"
+    private const val NOTIFICATION_CHANNEL_ID = "screenREC_notification_channel"
 
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null
@@ -64,19 +69,36 @@ object Core {
 
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val notificationBuilder = NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_notification)
-                .setContentTitle(header)
-                .setContentText(body)
-                .setContentIntent(pendingIntent)
-                .setUsesChronometer(true)
+        val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val notificationBuilder: Notification.Builder
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(NOTIFICATION_CHANNEL_ID, context!!.resources.getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.description = "screenREC notification channel"
+            notificationManager.createNotificationChannel(notificationChannel)
+
+            notificationBuilder = Notification.Builder(context, NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(header)
+                    .setContentText(body)
+                    .setContentIntent(pendingIntent)
+                    .setUsesChronometer(true)
+        } else {
+            notificationBuilder = Notification.Builder(context)
+                    .setSmallIcon(R.drawable.ic_notification)
+                    .setContentTitle(header)
+                    .setContentText(body)
+                    .setContentIntent(pendingIntent)
+                    .setUsesChronometer(true)
+        }
 
         val stopRecordingAction = Intent(context, MainActivity::class.java)
         stopRecordingAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         stopRecordingAction.putExtra(Core.STOP_RECORDING_ACTION, true)
         notificationBuilder.addAction(0, context!!.resources.getString(R.string.stop_recording_action), PendingIntent.getActivity(context, 0, stopRecordingAction, PendingIntent.FLAG_UPDATE_CURRENT))
 
-        NotificationManagerCompat.from(context).notify(1, notificationBuilder.build())
+        notificationManager.notify(1, notificationBuilder.build())
     }
 
     fun hideNotifications() = NotificationManagerCompat.from(context).cancelAll()
