@@ -34,6 +34,9 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.util.Log
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import software.kanunnikoff.screenrec.R
 import software.kanunnikoff.screenrec.core.Core
 import software.kanunnikoff.screenrec.model.Record
@@ -175,6 +178,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             Core.isFirstLaunch = false
         }
+
+        MobileAds.initialize(applicationContext, resources.getString(R.string.admob_app_id))
+        findViewById<AdView>(R.id.adView).loadAd(AdRequest.Builder().build())
     }
 
     override fun onBackPressed() {

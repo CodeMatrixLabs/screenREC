@@ -4,23 +4,23 @@ package software.kanunnikoff.screenrec.model
  * Created by dmitry on 17/10/2017.
  */
 data class Record(
-        var id: Long,
-        var title: String,
-        var outputFormat: String,
-        var outputFile: String,
-        var audioEncoder: String,
-        var audioEncodingBitRate: String,
-        var audioSamplingRate: String,
-        var audioChannels: String,
-        var videoEncoder: String,
-        var videoEncodingBitRate: String,
-        var videoFrameRate: String,
-        var videoSize: String,
-        var isFavored: Int,
-        var fileSize: String,
-        var duration: String,
-        var date: String,
-        var thumbnail: ByteArray
+        var id: Long = -1L,
+        var title: String = "title'",
+        var outputFormat: String = "MPEG4",
+        var outputFile: String = "file.mp4",
+        var audioEncoder: String = "ACC",
+        var audioEncodingBitRate: String = "16000",
+        var audioSamplingRate: String = "96000",
+        var audioChannels: String = "MONO",
+        var videoEncoder: String = "H264",
+        var videoEncodingBitRate: String = "3000000",
+        var videoFrameRate: String = "30",
+        var videoSize: String = "480x800",
+        var isFavored: Int = 0,
+        var fileSize: String = "1kb",
+        var duration: String = "1s",
+        var date: String = "today",
+        var thumbnail: ByteArray = ByteArray(1)
 ) {
     override fun equals(other: Any?): Boolean {
         return if (other !is Record) {

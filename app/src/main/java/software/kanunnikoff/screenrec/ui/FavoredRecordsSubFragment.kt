@@ -38,7 +38,7 @@ class FavoredRecordsSubFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(activity)
         recyclerView.layoutManager = layoutManager
-        adapter = RecordsRecyclerViewAdapter(activity as MainActivity, recyclerView, true)
+        adapter = RecordsRecyclerViewAdapter(activity as MainActivity, true)
         recyclerView.adapter = adapter
 
         recyclerView.setOnTouchListener { _, event ->
@@ -80,6 +80,11 @@ class FavoredRecordsSubFragment : Fragment() {
                     records.filterNot { adapter!!.records.contains(it) }.forEach { adapter!!.records.add(it) }
                     adapter!!.notifyDataSetChanged()
                     start = records.last().id
+                } else {
+                    if (adapter!!.records.last().id != -1L) {
+                        adapter!!.records.add(Record())
+                        adapter!!.notifyDataSetChanged()
+                    }
                 }
 
                 loading = false

@@ -17,17 +17,9 @@ import java.util.ArrayList
 /**
  * Created by dmitry on 17/10/2017.
  */
-class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: RecyclerView, val isFavoredRecordsSubFragment: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RecordsRecyclerViewAdapter(val activity: MainActivity, val isFavoredRecordsSubFragment: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var records: ArrayList<Record> = ArrayList()
     private val onClickListener = View.OnClickListener { view ->
-        val record = this.records[recyclerView.getChildLayoutPosition(view)]
-
-//        val fragment = RecordFragment.create(record)
-//        val transaction = (activity as AppCompatActivity).supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fragment_container, fragment, RecordFragment.RECORD_FRAGMENT.toString())
-//        transaction.addToBackStack(null)
-//        transaction.commit()
-
         if (view.tag == "invisible") {
             view.findViewById<LinearLayout>(R.id.recordMeta).visibility = View.VISIBLE
             view.tag = "visible"
@@ -38,17 +30,24 @@ class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: Recyc
     }
 
     override fun getItemViewType(position: Int): Int {
-        return RECORD_VIEW_TYPE
+        return if (records[position].id == -1L) {
+            RECORD_STUB_VIEW_TYPE
+        } else {
+            RECORD_VIEW_TYPE
+        }
     }
 
     /**
      * Создание новых View и RecordViewHolder элемента списка, которые впоследствии могут переиспользоваться.
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.records_recyclerview_item, parent, false)
-        view.setOnClickListener(onClickListener)
-
-        return RecordViewHolder(view)
+        if (viewType == RECORD_VIEW_TYPE) {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.records_recyclerview_item, parent, false)
+            view.setOnClickListener(onClickListener)
+            return RecordViewHolder(view)
+        } else {
+            return RecordStubViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.records_recyclerview_item_stub, parent, false))
+        }
     }
 
     /**
@@ -162,7 +161,11 @@ class RecordsRecyclerViewAdapter(val activity: MainActivity, recyclerView: Recyc
         val menu = view.findViewById<ImageView>(R.id.menu)
     }
 
+    private inner class RecordStubViewHolder internal constructor(val view: View) : RecyclerView.ViewHolder(view) {
+    }
+
     companion object {
         private val RECORD_VIEW_TYPE = 0
+        private val RECORD_STUB_VIEW_TYPE = 1
     }
 }
