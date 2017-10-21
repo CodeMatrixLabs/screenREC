@@ -81,7 +81,7 @@ class AllRecordsSubFragment : Fragment() {
                     adapter!!.notifyDataSetChanged()
                     start = records.last().id
                 } else {
-                    if (adapter!!.records.last().id != -1L) {
+                    if (adapter!!.records.isNotEmpty() && adapter!!.records.last().id != -1L) {
                         adapter!!.records.add(Record())
                         adapter!!.notifyDataSetChanged()
                     }

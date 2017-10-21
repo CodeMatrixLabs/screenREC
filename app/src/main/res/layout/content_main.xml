@@ -31,8 +31,7 @@
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="-70dp"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id" />
 

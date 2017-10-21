@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "628399540504",
+    "firebase_url": "https://screenrec-e7d5d.firebaseio.com",
+    "project_id": "screenrec-e7d5d",
+    "storage_bucket": "screenrec-e7d5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:628399540504:android:cb641d95ce11b7e0",
+        "android_client_info": {
+          "package_name": "software.kanunnikoff.screenrec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "628399540504-1p3tq590o7pog44ktm2nflffamsfuk4f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "software.kanunnikoff.screenrec",
+            "certificate_hash": "f2755914de369759f5815d37cc8ad14bc9d90456"
+          }
+        },
+        {
+          "client_id": "628399540504-dsig4l71htj39ha89mvvqbfpsvl7cvl9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJBZ02KqP_rL2Znp_AWMUoxX4LtAF3Mck"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "628399540504-dsig4l71htj39ha89mvvqbfpsvl7cvl9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
