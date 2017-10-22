@@ -188,9 +188,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Core.isFirstLaunch = false
         }
 
+        Core.isPremiumPurchased = true
+
 // ------------------------------------------- Ads
 
-        if (!isPremiumPurchased) {
+        if (!Core.isPremiumPurchased) {
             MobileAds.initialize(applicationContext, resources.getString(R.string.admob_app_id))
             findViewById<AdView>(R.id.adView).loadAd(AdRequest.Builder().build())
         } else {
@@ -215,10 +217,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      * Update UI to reflect model
      */
     @UiThread
-    fun updateUi() {  // здесь я должен поменять надписи - покупка подтверждена
-        if (isPremiumPurchased) {
-            Core.isPremiumPurchased = true
-        }
+    fun premiumPurchased() {  // покупка подтверждена
+        Core.isPremiumPurchased = true
     }
 
     override fun onBackPressed() {
@@ -263,7 +263,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent.createChooser(intent, resources.getString(R.string.share) + "..."))
             }
             R.id.nav_buy -> {
-                if (!isPremiumPurchased) {
+                if (!Core.isPremiumPurchased) {
                     if (mBillingManager != null && mBillingManager!!.billingClientResponseCode > BILLING_MANAGER_NOT_INITIALIZED) {
                         mBillingManager?.initiatePurchaseFlow(Core.PREMIUM_SKU_ID, BillingClient.SkuType.INAPP)
                     }

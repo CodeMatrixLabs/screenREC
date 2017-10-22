@@ -55,7 +55,7 @@ class RecordMenuDialogFragment() : DialogFragment() {
                 view.findViewById<TextView>(R.id.itemName).text = items[position]
 
                 if (position == RENAME_ITEM && !Core.isPremiumPurchased) {
-                    view.findViewById<TextView>(R.id.itemName).text = view.findViewById<TextView>(R.id.itemName).text.toString() + " - Premium"
+                    view.findViewById<TextView>(R.id.itemName).text = items[position] + " - Premium"
                 }
 
                 return view

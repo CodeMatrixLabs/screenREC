@@ -30,8 +30,6 @@ import software.kanunnikoff.screenrec.ui.MainActivity;
  * Handles control logic of the BaseGamePlayActivity
  */
 public class MainViewController {
-    private static final String TAG = "MainViewController";
-
     private final UpdateListener mUpdateListener;
     private MainActivity mActivity;
 
@@ -65,13 +63,11 @@ public class MainViewController {
             for (Purchase purchase : purchaseList) {
                 switch (purchase.getSku()) {
                     case Core.PREMIUM_SKU_ID:
-                        Log.d(TAG, "You are Premium! Congratulations!!!");
                         mIsPremium = true;
+                        mActivity.premiumPurchased();
                         break;
                 }
             }
-
-            mActivity.updateUi();
         }
     }
 }

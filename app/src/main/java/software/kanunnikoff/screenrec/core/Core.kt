@@ -47,13 +47,12 @@ object Core {
     private const val COLUMN_VIDEO_SIZE_HEIGHT = "pref_key_video_size_height"
     private const val IS_FIRST_LAUNCH = "is_first_launch"
     private const val NOTIFICATION_CHANNEL_ID = "screenREC_notification_channel"
+    private const val IS_PREMIUM_PURCHASED = "is_premium_purchased"
 
     const val PREMIUM_SKU_ID = "premium"
 
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null
-
-    var isPremiumPurchased = false
 
     fun init(context: Context) {
         this.context = context
@@ -156,6 +155,14 @@ object Core {
                 .asBitmap()
                 .into(imageView)
     }
+
+    var isPremiumPurchased: Boolean
+        get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getBoolean(IS_PREMIUM_PURCHASED, false)
+        set(value) {
+            val editor = context!!.getSharedPreferences(Core.APP_TAG, Context.MODE_PRIVATE).edit()
+            editor.putBoolean(IS_PREMIUM_PURCHASED, value)
+            editor.apply()
+        }
 
     var recordNumber: Int
         get() = context!!.getSharedPreferences(APP_TAG, Context.MODE_PRIVATE).getInt(RECORD_NUMBER, 1)
