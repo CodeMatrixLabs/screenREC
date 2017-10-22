@@ -188,8 +188,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Core.isFirstLaunch = false
         }
 
-        Core.isPremiumPurchased = true
-
 // ------------------------------------------- Ads
 
         if (!Core.isPremiumPurchased) {
