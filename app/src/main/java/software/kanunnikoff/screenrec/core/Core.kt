@@ -25,11 +25,10 @@ import android.app.NotificationChannel
 import android.os.Build
 
 
-
-@SuppressLint("StaticFieldLeak")
 /**
  * Created by dmitry on 15/10/2017.
  */
+@SuppressLint("StaticFieldLeak")
 object Core {
     const val APP_TAG = "screenREC"
     const val STOP_RECORDING_ACTION = "stop_recording"
@@ -49,8 +48,12 @@ object Core {
     private const val IS_FIRST_LAUNCH = "is_first_launch"
     private const val NOTIFICATION_CHANNEL_ID = "screenREC_notification_channel"
 
+    const val PREMIUM_SKU_ID = "premium"
+
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null
+
+    var isPremiumPurchased = false
 
     fun init(context: Context) {
         this.context = context

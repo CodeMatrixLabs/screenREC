@@ -23,7 +23,7 @@
     <string name="s">z</string>
     <string name="rate">Preis</string>
     <string name="remove_ads">Anzeigen entfernen</string>
-    <string name="buy">Kaufen</string>
+    <string name="buy">Premium kaufen</string>
     <string name="pref_basic_title">Basic</string>
     <string name="pref_file_name_prefix_title">Dateinamenpräfix</string>
     <string name="pref_file_name_prefix_summary">Dateinamenpräfix für den Datensatz im Speicher</string>
@@ -55,4 +55,5 @@
     <string name="video_size">Video Größe</string>
     <string name="audio_channels_stereo">Stereo</string>
     <string name="audio_channels_mono">Mono</string>
+    <string name="premium_purchased">Premium ist bereits gekauft! Genießen!</string>
 </resources>

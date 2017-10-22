@@ -28,29 +28,37 @@ import android.media.ThumbnailUtils
 import android.net.Uri
 import android.preference.PreferenceManager
 import android.provider.MediaStore
+import android.support.annotation.UiThread
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
-import android.util.Log
+import com.android.billingclient.api.BillingClient
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import software.kanunnikoff.screenrec.R
+import software.kanunnikoff.screenrec.billing.BillingManager
+import software.kanunnikoff.screenrec.billing.BillingManager.BILLING_MANAGER_NOT_INITIALIZED
+import software.kanunnikoff.screenrec.billing.BillingProvider
+import software.kanunnikoff.screenrec.billing.MainViewController
 import software.kanunnikoff.screenrec.core.Core
 import software.kanunnikoff.screenrec.model.Record
 import java.io.ByteArrayOutputStream
 import java.io.File
 
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BillingProvider {
     private val recorder = MyMediaRecorder()
     private val projection = MyMediaProjection()
     private val displayMetrics = DisplayMetrics()
     private var isRecording = false
     val allRecordsSubFragment = AllRecordsSubFragment()
     val favoredRecordsSubFragment = FavoredRecordsSubFragment()
+
+    private var mBillingManager: BillingManager? = null
+    private var mViewController: MainViewController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,8 +187,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Core.isFirstLaunch = false
         }
 
+// ------------------------------------------- Ads
+
         MobileAds.initialize(applicationContext, resources.getString(R.string.admob_app_id))
         findViewById<AdView>(R.id.adView).loadAd(AdRequest.Builder().build())
+
+// ------------------------------------------- In-App Billing
+
+        mViewController = MainViewController(this)
+        mBillingManager = BillingManager(this, mViewController!!.updateListener)
+    }
+
+    override fun isPremiumPurchased(): Boolean {
+        return mViewController!!.isPremiumPurchased
+    }
+
+    fun onBillingManagerSetupFinished() {
+        // клиент In-App Billing настроен
+    }
+
+    /**
+     * Update UI to reflect model
+     */
+    @UiThread
+    fun updateUi() {  // здесь я должен поменять надписи - покупка подтверждена
+        if (isPremiumPurchased) {
+            Core.isPremiumPurchased = true
+        }
     }
 
     override fun onBackPressed() {
@@ -225,7 +258,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivity(Intent.createChooser(intent, resources.getString(R.string.share) + "..."))
             }
             R.id.nav_buy -> {
-
+                if (!isPremiumPurchased) {
+                    if (mBillingManager != null && mBillingManager!!.billingClientResponseCode > BILLING_MANAGER_NOT_INITIALIZED) {
+                        mBillingManager?.initiatePurchaseFlow(Core.PREMIUM_SKU_ID, BillingClient.SkuType.INAPP)
+                    }
+                } else {
+                    Core.showToast(resources.getString(R.string.premium_purchased))
+                }
             }
         }
 
@@ -276,28 +315,25 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNewIntent(intent: Intent?) {
         val stopRecording = intent?.extras?.getBoolean(Core.STOP_RECORDING_ACTION)
 
-        Log.i(Core.APP_TAG, "*** stopRecording = $stopRecording")
-
         if (stopRecording != null && stopRecording) {
-            Log.i(Core.APP_TAG, "*** clicked")
             fab.performClick()
         } else {
             super.onNewIntent(intent)
         }
     }
 
-//    override fun onPause() {
-//        if (isRecording) {
-//            Core.showNotification(resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
-//        }
-//
-//        super.onPause()
-//    }
-//
-//    override fun onResume() {
-//        super.onResume()
-//        Core.hideNotifications()
-//    }
+    override fun onResume() {
+        super.onResume()
+
+        if (mBillingManager != null && mBillingManager!!.billingClientResponseCode == BillingClient.BillingResponse.OK) {
+            mBillingManager!!.queryPurchases()
+        }
+    }
+
+    public override fun onDestroy() {
+        mBillingManager?.destroy()
+        super.onDestroy()
+    }
 
     private inner class MyPagerAdapter internal constructor(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 

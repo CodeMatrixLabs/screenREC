@@ -30,7 +30,7 @@
 
     <string name="rate">Оценить</string>
     <string name="remove_ads">Убрать рекламу</string>
-    <string name="buy">Купить</string>
+    <string name="buy">Купить Премиум</string>
     <string name="pref_basic_title">Основное</string>
     <string name="pref_file_name_prefix_title">Префикс имени файла</string>
     <string name="pref_file_name_prefix_summary">Префикс имени файла для записи на файловой системе устройства</string>
@@ -62,4 +62,5 @@
     <string name="video_size">Размер видео</string>
     <string name="audio_channels_mono">Моно</string>
     <string name="audio_channels_stereo">Стерео</string>
+    <string name="premium_purchased">Премиум уже приобретен! Наслаждайтесь!</string>
 </resources>

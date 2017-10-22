@@ -23,7 +23,7 @@
     <string name="s">s</string>
     <string name="rate">Taux</string>
     <string name="remove_ads">Supprimez la pub</string>
-    <string name="buy">Acheter</string>
+    <string name="buy">Acheter Premium</string>
     <string name="pref_basic_title">De base</string>
     <string name="pref_file_name_prefix_title">Préfixe du nom de fichier</string>
     <string name="pref_file_name_prefix_summary">Préfixe de nom de fichier pour l\'enregistrement sur le stockage</string>
@@ -55,4 +55,5 @@
     <string name="video_size">Taille de la vidéo</string>
     <string name="audio_channels_stereo">Stéréo</string>
     <string name="audio_channels_mono">Mono</string>
+    <string name="premium_purchased">La prime est déjà achetée! Prendre plaisir!</string>
 </resources>

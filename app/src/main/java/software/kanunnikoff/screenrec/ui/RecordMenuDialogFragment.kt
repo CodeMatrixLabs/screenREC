@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import software.kanunnikoff.screenrec.core.Core
 import software.kanunnikoff.screenrec.model.Record
 import java.io.File
 
@@ -53,6 +54,10 @@ class RecordMenuDialogFragment() : DialogFragment() {
                 view.findViewById<ImageView>(R.id.itemImage).setImageDrawable(activity.resources.getDrawable(images[position]))
                 view.findViewById<TextView>(R.id.itemName).text = items[position]
 
+                if (position == RENAME_ITEM && !Core.isPremiumPurchased) {
+                    view.findViewById<TextView>(R.id.itemName).text = view.findViewById<TextView>(R.id.itemName).text.toString() + " - Premium"
+                }
+
                 return view
             }
         }
@@ -61,7 +66,9 @@ class RecordMenuDialogFragment() : DialogFragment() {
         builder.setTitle(null).setAdapter(adapter, { _, which ->
             when (which) {
                 RENAME_ITEM -> {
-                    onRename?.invoke()
+                    if (Core.isPremiumPurchased) {
+                        onRename?.invoke()
+                    }
                 }
 
                 PLAY_ITEM -> {
