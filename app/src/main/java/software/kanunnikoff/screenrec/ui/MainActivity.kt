@@ -46,6 +46,7 @@ import software.kanunnikoff.screenrec.billing.BillingProvider
 import software.kanunnikoff.screenrec.billing.MainViewController
 import software.kanunnikoff.screenrec.core.Core
 import software.kanunnikoff.screenrec.model.Record
+import software.kanunnikoff.screenrec.service.MyIntentService
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 projection.stop()
                 isRecording = false
                 fab.setImageDrawable(resources.getDrawable(R.drawable.ic_fiber_manual_record_white_24px))
-                Core.hideNotifications()
+                stopService(Intent(this@MainActivity, MyIntentService::class.java))
 
                 val size: String
                 var length = File(recorder.outputFileAbsolutePath).length() / 1024 / 1024   // megabytes
@@ -299,7 +300,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     recorder.start()
                     isRecording = true
                     fab.setImageDrawable(resources.getDrawable(R.drawable.ic_stop_white_24px))
-                    Core.showNotification(resources.getString(R.string.app_name), resources.getString(R.string.notification_body))
+                    startService(Intent(this@MainActivity, MyIntentService::class.java))
                 }
             }
         }

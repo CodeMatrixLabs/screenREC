@@ -65,7 +65,7 @@ object Core {
         toast.show()
     }
 
-    fun showNotification(header: String, body: String) {
+    fun getNotification(header: String, body: String): Notification {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
@@ -100,10 +100,8 @@ object Core {
         stopRecordingAction.putExtra(Core.STOP_RECORDING_ACTION, true)
         notificationBuilder.addAction(0, context!!.resources.getString(R.string.stop_recording_action), PendingIntent.getActivity(context, 0, stopRecordingAction, PendingIntent.FLAG_UPDATE_CURRENT))
 
-        notificationManager.notify(1, notificationBuilder.build())
+        return notificationBuilder.build()
     }
-
-    fun hideNotifications() = NotificationManagerCompat.from(context).cancelAll()
 
     fun receiveAllRecords(start: Long, callback: Callback<Record>) {
         callback.onResult(sqliteStorage!!.getAllRecords(start))
