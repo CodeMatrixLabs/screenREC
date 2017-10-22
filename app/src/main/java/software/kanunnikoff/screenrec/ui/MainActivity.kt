@@ -34,6 +34,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.View
 import com.android.billingclient.api.BillingClient
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
@@ -189,8 +190,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
 // ------------------------------------------- Ads
 
-        MobileAds.initialize(applicationContext, resources.getString(R.string.admob_app_id))
-        findViewById<AdView>(R.id.adView).loadAd(AdRequest.Builder().build())
+        if (!isPremiumPurchased) {
+            MobileAds.initialize(applicationContext, resources.getString(R.string.admob_app_id))
+            findViewById<AdView>(R.id.adView).loadAd(AdRequest.Builder().build())
+        } else {
+            findViewById<AdView>(R.id.adView).visibility = View.GONE
+        }
 
 // ------------------------------------------- In-App Billing
 

@@ -2,8 +2,8 @@
     <string name="app_name" translatable="false">screenREC</string>
 
     <string name="admob_app_id" translatable="false">ca-app-pub-2959070576298669~2925716016</string>
-    <!--<string name="banner_ad_unit_id">ca-app-pub-2959070576298669/5235829366</string>-->
-    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>   <!-- test -->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-2959070576298669/5235829366</string>
+    <!--<string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>   &lt;!&ndash; test &ndash;&gt;-->
 
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
