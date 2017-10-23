@@ -39,7 +39,7 @@
     <string name="pref_audio_sampling_rate_title">Taux d\'échantillonnage audio</string>
     <string name="pref_audio_sampling_rate_summary">Choisissez le taux d\'échantillonnage approprié</string>
     <string name="pref_audio_channels_title">Canaux audio</string>
-    <string name="pref_audio_channels_summary">Mono, Stéréo</string>
+    <string name="pref_audio_channels_summary">Mono, Stéréo, Silencieux</string>
     <string name="pref_choose_audio_channels_dialog_title">Choisir des chaînes</string>
     <string name="pref_video_encoder_title">Encodeur vidéo</string>
     <string name="pref_choose_video_encoder_dialog_title">Choisissez un encodeur</string>
@@ -56,4 +56,11 @@
     <string name="audio_channels_stereo">Stéréo</string>
     <string name="audio_channels_mono">Mono</string>
     <string name="premium_purchased">La prime est déjà achetée! Prendre plaisir!</string>
+    <string name="audio_channels_silent">Silencieux</string>
+
+    <string-array name="pref_audio_channels_titles">
+        <item>Mono</item>
+        <item>Stéréo</item>
+        <item>Silencieux</item>
+    </string-array>
 </resources>

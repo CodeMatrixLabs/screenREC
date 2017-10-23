@@ -53,17 +53,22 @@ class MyMediaRecorder {
 
         recorder = MediaRecorder()
 
-        recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        if (audioChannels != AudioChannels.SILENT) {
+            recorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        }
+
         recorder?.setVideoSource(MediaRecorder.VideoSource.SURFACE)
 
         recorder?.setOutputFormat(outputFormat)
         outputFileAbsolutePath = dir.absolutePath + File.separator + outputFile
         recorder?.setOutputFile(outputFileAbsolutePath)
 
-        recorder?.setAudioEncoder(audioEncoder)
-        recorder?.setAudioEncodingBitRate(audioEncodingBitRate)
-        recorder?.setAudioSamplingRate(audioSamplingRate)
-        recorder?.setAudioChannels(audioChannels)
+        if (audioChannels != AudioChannels.SILENT) {
+            recorder?.setAudioEncoder(audioEncoder)
+            recorder?.setAudioEncodingBitRate(audioEncodingBitRate)
+            recorder?.setAudioSamplingRate(audioSamplingRate)
+            recorder?.setAudioChannels(audioChannels)
+        }
 
         recorder?.setVideoEncoder(videoEncoder)
         recorder?.setVideoEncodingBitRate(videoEncodingBitRate)
@@ -110,5 +115,6 @@ class MyMediaRecorder {
     object AudioChannels {
         const val MONO = 1
         const val STEREO = 2
+        const val SILENT = 3
     }
 }

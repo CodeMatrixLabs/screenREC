@@ -91,15 +91,17 @@
     <string name="pref_audio_sampling_rate_summary">Choose appropriate sampling rate</string>
 
     <string name="pref_audio_channels_title">Audio channels</string>
-    <string name="pref_audio_channels_summary">Mono, Stereo</string>
+    <string name="pref_audio_channels_summary">Mono, Stereo, Silent</string>
     <string name="pref_choose_audio_channels_dialog_title">Choose channels</string>
     <string-array name="pref_audio_channels_titles">
         <item>Mono</item>
         <item>Stereo</item>
+        <item>Silent</item>
     </string-array>
     <string-array name="pref_audio_channels_values">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string name="pref_video_encoder_title">Video encoder</string>
@@ -138,6 +140,7 @@
 
     <string name="audio_channels_mono">Mono</string>
     <string name="audio_channels_stereo">Stereo</string>
+    <string name="audio_channels_silent">Silent</string>
 
     <string name="premium_purchased">Premium is already purchased! Enjoy!</string>
 

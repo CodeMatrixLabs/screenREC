@@ -47,7 +47,7 @@
     <string name="pref_audio_sampling_rate_title">Частота дискретизации аудио</string>
     <string name="pref_audio_sampling_rate_summary">Выберите подходящую частоту дискретизации</string>
     <string name="pref_audio_channels_title">Аудио-каналы</string>
-    <string name="pref_audio_channels_summary">Моно, Стерео</string>
+    <string name="pref_audio_channels_summary">Моно, Стерео, Без звука</string>
     <string name="pref_choose_audio_channels_dialog_title">Выберите каналы</string>
     <string name="pref_video_encoder_title">Видеокодер</string>
     <string name="pref_choose_video_encoder_dialog_title">Выберите кодер</string>
@@ -63,4 +63,11 @@
     <string name="audio_channels_mono">Моно</string>
     <string name="audio_channels_stereo">Стерео</string>
     <string name="premium_purchased">Премиум уже приобретен! Наслаждайтесь!</string>
+    <string name="audio_channels_silent">Без звука</string>
+
+    <string-array name="pref_audio_channels_titles">
+        <item>Моно</item>
+        <item>Стерео</item>
+        <item>Без звука</item>
+    </string-array>
 </resources>

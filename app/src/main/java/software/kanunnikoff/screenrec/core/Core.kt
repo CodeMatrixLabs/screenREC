@@ -322,7 +322,8 @@ object Core {
     fun audioChannelsString(): String {
         return when (getAudioChannels()) {
             MyMediaRecorder.AudioChannels.MONO -> context!!.resources.getString(R.string.audio_channels_mono)
-            else -> context!!.resources.getString(R.string.audio_channels_stereo)
+            MyMediaRecorder.AudioChannels.STEREO -> context!!.resources.getString(R.string.audio_channels_stereo)
+            else -> context!!.resources.getString(R.string.audio_channels_silent)
         }
     }
 

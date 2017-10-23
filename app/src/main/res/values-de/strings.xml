@@ -39,7 +39,7 @@
     <string name="pref_audio_sampling_rate_title">Audio-Abtastrate</string>
     <string name="pref_audio_sampling_rate_summary">Wählen Sie die geeignete Abtastrate</string>
     <string name="pref_audio_channels_title">Audiokanäle</string>
-    <string name="pref_audio_channels_summary">Mono, Stereo</string>
+    <string name="pref_audio_channels_summary">Mono, Stereo, Silent</string>
     <string name="pref_choose_audio_channels_dialog_title">Kanäle auswählen</string>
     <string name="pref_video_encoder_title">Video-Encoder</string>
     <string name="pref_choose_video_encoder_dialog_title">Wählen Sie den Encoder</string>
@@ -56,4 +56,5 @@
     <string name="audio_channels_stereo">Stereo</string>
     <string name="audio_channels_mono">Mono</string>
     <string name="premium_purchased">Premium ist bereits gekauft! Genießen!</string>
+    <string name="audio_channels_silent">Silent</string>
 </resources>
