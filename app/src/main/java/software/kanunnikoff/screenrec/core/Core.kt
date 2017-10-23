@@ -50,6 +50,7 @@ object Core {
     private const val IS_PREMIUM_PURCHASED = "is_premium_purchased"
 
     const val PREMIUM_SKU_ID = "premium"
+    const val START_STOP_RECORDING_DELAY = 5000L
 
     var sqliteStorage: RecordsSqliteStorage? = null
     var context: Context? = null

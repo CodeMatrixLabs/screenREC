@@ -15,12 +15,14 @@ import software.kanunnikoff.screenrec.core.MyMediaRecorder
 import android.util.DisplayMetrics
 import software.kanunnikoff.screenrec.core.MyMediaProjection
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.projection.MediaProjectionManager
 import software.kanunnikoff.screenrec.core.PermissionManager
 import software.kanunnikoff.screenrec.core.PermissionManager.CAST_PERMISSION_CODE
 import software.kanunnikoff.screenrec.core.PermissionManager.PERMISSIONS_CODE
 import java.util.*
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
@@ -46,6 +48,7 @@ import software.kanunnikoff.screenrec.billing.BillingProvider
 import software.kanunnikoff.screenrec.billing.MainViewController
 import software.kanunnikoff.screenrec.core.Core
 import software.kanunnikoff.screenrec.model.Record
+import software.kanunnikoff.screenrec.receiver.MyBroadcastReceiver
 import software.kanunnikoff.screenrec.service.MyIntentService
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -59,8 +62,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     val allRecordsSubFragment = AllRecordsSubFragment()
     val favoredRecordsSubFragment = FavoredRecordsSubFragment()
 
-    private var mBillingManager: BillingManager? = null
+    var mBillingManager: BillingManager? = null
     private var mViewController: MainViewController? = null
+
+    private val myBroadcastReceiver = MyBroadcastReceiver(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +75,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         windowManager.defaultDisplay.getMetrics(displayMetrics)
 
         fab.setOnClickListener { _ ->
+            fab.isEnabled = false
+            fab.backgroundTintList = ColorStateList.valueOf(this@MainActivity.resources.getColor(android.R.color.darker_gray))
+            Timer().schedule(object: TimerTask() {
+                override fun run() {
+                    this@MainActivity.runOnUiThread {
+                        fab.isEnabled = true
+                        fab.backgroundTintList = ColorStateList.valueOf(this@MainActivity.resources.getColor(R.color.activeTabColor))
+                    }
+                }
+            }, Core.START_STOP_RECORDING_DELAY)
+
             if (projection.isInited()) {
                 recorder.stop()
                 projection.stop()
@@ -218,6 +234,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     @UiThread
     fun premiumPurchased() {  // покупка подтверждена
         Core.isPremiumPurchased = true
+
+        if (findViewById<AdView>(R.id.adView).visibility == View.VISIBLE) {
+            findViewById<AdView>(R.id.adView).visibility = View.GONE
+        }
     }
 
     override fun onBackPressed() {
@@ -319,7 +339,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNewIntent(intent: Intent?) {
         val stopRecording = intent?.extras?.getBoolean(Core.STOP_RECORDING_ACTION)
 
-        if (stopRecording != null && stopRecording) {
+        if (stopRecording != null && stopRecording && fab.isEnabled) {
             fab.performClick()
         } else {
             super.onNewIntent(intent)
@@ -332,6 +352,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         if (mBillingManager != null && mBillingManager!!.billingClientResponseCode == BillingClient.BillingResponse.OK) {
             mBillingManager!!.queryPurchases()
         }
+
+        registerReceiver(myBroadcastReceiver, IntentFilter("com.android.vending.billing.PURCHASES_UPDATED"))
+    }
+
+    override fun onPause() {
+        unregisterReceiver(myBroadcastReceiver)
+        super.onPause()
     }
 
     public override fun onDestroy() {

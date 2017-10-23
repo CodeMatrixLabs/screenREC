@@ -30,8 +30,8 @@ class MyMediaProjection {
     }
 
     fun stop() {
-        virtualDisplay?.release()
         mediaProjection?.stop()
+        virtualDisplay?.release()
 
         mediaProjection = null
         virtualDisplay = null

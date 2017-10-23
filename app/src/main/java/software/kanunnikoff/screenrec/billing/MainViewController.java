@@ -16,8 +16,6 @@
 
 package software.kanunnikoff.screenrec.billing;
 
-import android.util.Log;
-
 import com.android.billingclient.api.Purchase;
 
 import java.util.List;
