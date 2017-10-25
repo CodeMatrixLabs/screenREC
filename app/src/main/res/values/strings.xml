@@ -38,6 +38,7 @@
     <string name="s">s</string>
 
     <string name="rate">Rate</string>
+    <string name="view_other_apps">Other apps</string>
     <string name="remove_ads">Remove Ads</string>
     <string name="buy">Buy Premium</string>
 
@@ -144,4 +145,5 @@
 
     <string name="premium_purchased">Premium is already purchased! Enjoy!</string>
 
+    <string name="could_not_take_thumbnail">Couldn\'t take thumbnail - video file may be corrupt!</string>
 </resources>

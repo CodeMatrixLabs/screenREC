@@ -24,6 +24,7 @@ import java.util.*
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.media.CamcorderProfile
 import android.media.MediaRecorder
 import android.media.ThumbnailUtils
@@ -109,8 +110,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     }
                 }
 
-                val bitmap = ThumbnailUtils.createVideoThumbnail(recorder.outputFileAbsolutePath, MediaStore.Images.Thumbnails.MINI_KIND)
+                var bitmap = ThumbnailUtils.createVideoThumbnail(recorder.outputFileAbsolutePath, MediaStore.Images.Thumbnails.MINI_KIND)
                 val stream = ByteArrayOutputStream()
+
+                if (bitmap == null) {
+                    bitmap = BitmapFactory.decodeResource(resources, R.drawable.no_thumbnail)
+                    Core.showToast(resources.getString(R.string.could_not_take_thumbnail))
+                }
+
                 bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream)
 
                 val record = Record(
@@ -271,15 +278,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
             R.id.nav_rate -> {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
             }
             R.id.nav_share -> {
                 val intent = Intent()
                 intent.action = Intent.ACTION_SEND
                 intent.putExtra(Intent.EXTRA_SUBJECT, resources.getString(R.string.app_name))
-                intent.putExtra(Intent.EXTRA_TEXT, "Google Play: https://play.google.com/store/apps/details?id=" + packageName)
+                intent.putExtra(Intent.EXTRA_TEXT, "Google Play: https://play.google.com/store/apps/details?id=$packageName")
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, resources.getString(R.string.share) + "..."))
+            }
+            R.id.nav_apps -> {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=9118553902079488918")))
             }
             R.id.nav_buy -> {
                 if (!Core.isPremiumPurchased) {

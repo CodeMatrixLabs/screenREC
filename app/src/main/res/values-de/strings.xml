@@ -57,4 +57,6 @@
     <string name="audio_channels_mono">Mono</string>
     <string name="premium_purchased">Premium ist bereits gekauft! Genießen!</string>
     <string name="audio_channels_silent">Silent</string>
+    <string name="could_not_take_thumbnail">Miniaturansicht konnte nicht gemacht werden - Videodatei ist möglicherweise beschädigt!</string>
+    <string name="view_other_apps">Andere Apps</string>
 </resources>

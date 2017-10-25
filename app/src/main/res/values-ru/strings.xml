@@ -70,4 +70,6 @@
         <item>Стерео</item>
         <item>Без звука</item>
     </string-array>
+    <string name="could_not_take_thumbnail">Не удалось получить кадр - видеофайл может быть поврежден!</string>
+    <string name="view_other_apps">Другие приложения</string>
 </resources>

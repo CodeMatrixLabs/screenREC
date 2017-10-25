@@ -63,4 +63,6 @@
         <item>Stéréo</item>
         <item>Silencieux</item>
     </string-array>
+    <string name="could_not_take_thumbnail">Impossible de prendre la miniature - le fichier vidéo est peut-être corrompu!</string>
+    <string name="view_other_apps">D\'autres applications</string>
 </resources>
