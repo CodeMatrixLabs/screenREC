@@ -23,8 +23,8 @@ class RenameRecordDialogFragment() : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity, R.style.MyDialogTheme)
-        val inflater = activity.layoutInflater
+        val builder = AlertDialog.Builder(this@RenameRecordDialogFragment.context!!, R.style.MyDialogTheme)
+        val inflater = this@RenameRecordDialogFragment.layoutInflater
         val view: View = inflater.inflate(R.layout.rename_record_dialog, null)
 
         builder.setView(view)
@@ -34,7 +34,7 @@ class RenameRecordDialogFragment() : DialogFragment() {
                     if (text.isNotEmpty()) {
                         onRename?.invoke(text)
                     } else {
-                        Core.showToast(activity.resources.getString(R.string.field_must_not_be_empty))
+                        Core.showToast(this@RenameRecordDialogFragment.resources.getString(R.string.field_must_not_be_empty))
                     }
                 })
                 .setNegativeButton(R.string.cancel, { _, _ -> this@RenameRecordDialogFragment.dialog.cancel() })
@@ -43,8 +43,8 @@ class RenameRecordDialogFragment() : DialogFragment() {
 
         dialog.setOnShowListener { _ ->
             run {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.resources.getColor(android.R.color.white))
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.resources.getColor(android.R.color.white))
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(this@RenameRecordDialogFragment.resources.getColor(android.R.color.white))
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(this@RenameRecordDialogFragment.resources.getColor(android.R.color.white))
             }
         }
 

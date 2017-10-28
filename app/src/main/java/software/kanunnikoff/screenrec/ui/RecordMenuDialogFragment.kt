@@ -39,19 +39,19 @@ class RecordMenuDialogFragment() : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val items = Array<String>(4, init = { index ->
             return@Array when (index) {
-                0 -> activity.resources.getString(R.string.rename)
-                1 -> activity.resources.getString(R.string.play)
-                2 -> activity.resources.getString(R.string.share)
-                else -> activity.resources.getString(R.string.delete)
+                0 -> this@RecordMenuDialogFragment.resources.getString(R.string.rename)
+                1 -> this@RecordMenuDialogFragment.resources.getString(R.string.play)
+                2 -> this@RecordMenuDialogFragment.resources.getString(R.string.share)
+                else -> this@RecordMenuDialogFragment.resources.getString(R.string.delete)
             }
         })
 
         val adapter = object : ArrayAdapter<String>(activity, R.layout.record_menu_item, items) {
 
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
-                val inflater = activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+                val inflater = this@RecordMenuDialogFragment.context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
                 val view = inflater.inflate(R.layout.record_menu_item, null)
-                view.findViewById<ImageView>(R.id.itemImage).setImageDrawable(activity.resources.getDrawable(images[position]))
+                view.findViewById<ImageView>(R.id.itemImage).setImageDrawable(this@RecordMenuDialogFragment.resources.getDrawable(images[position]))
                 view.findViewById<TextView>(R.id.itemName).text = items[position]
 
                 if (position == RENAME_ITEM && !Core.isPremiumPurchased) {
@@ -62,7 +62,7 @@ class RecordMenuDialogFragment() : DialogFragment() {
             }
         }
 
-        val builder = AlertDialog.Builder(activity, R.style.MyDialogTheme)
+        val builder = AlertDialog.Builder(this@RecordMenuDialogFragment.context!!, R.style.MyDialogTheme)
         builder.setTitle(null).setAdapter(adapter, { _, which ->
             when (which) {
                 RENAME_ITEM -> {
@@ -83,7 +83,7 @@ class RecordMenuDialogFragment() : DialogFragment() {
                     intent.putExtra(Intent.EXTRA_SUBJECT, record!!.title)
                     intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(File(record!!.outputFile)))
                     intent.type = "text/plain"
-                    startActivity(Intent.createChooser(intent, activity.resources.getString(R.string.share) + "..."))
+                    startActivity(Intent.createChooser(intent, this@RecordMenuDialogFragment.resources.getString(R.string.share) + "..."))
                 }
 
                 DELETE_ITEM -> {

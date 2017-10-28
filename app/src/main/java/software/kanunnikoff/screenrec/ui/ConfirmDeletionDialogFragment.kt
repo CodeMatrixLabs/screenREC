@@ -20,7 +20,7 @@ class ConfirmDeletionDialogFragment() : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity, R.style.MyDialogTheme)
+        val builder = AlertDialog.Builder(this@ConfirmDeletionDialogFragment.context!!, R.style.MyDialogTheme)
         builder.setMessage(R.string.dialog_delete_record)
                 .setPositiveButton(R.string.delete, { _, _ ->
                     onConfirm?.invoke()
@@ -33,8 +33,8 @@ class ConfirmDeletionDialogFragment() : DialogFragment() {
 
         dialog.setOnShowListener { _ ->
             run {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(activity.resources.getColor(android.R.color.white))
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(activity.resources.getColor(android.R.color.white))
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(this@ConfirmDeletionDialogFragment.resources.getColor(android.R.color.white))
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(this@ConfirmDeletionDialogFragment.resources.getColor(android.R.color.white))
             }
         }
 
