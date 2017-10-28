@@ -346,16 +346,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        val stopRecording = intent?.extras?.getBoolean(Core.STOP_RECORDING_ACTION)
-
-        if (stopRecording != null && stopRecording && fab.isEnabled) {
-            fab.performClick()
-        } else {
-            super.onNewIntent(intent)
-        }
-    }
-
     override fun onResume() {
         super.onResume()
 
@@ -372,6 +362,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     public override fun onDestroy() {
+        if (isRecording) {
+            fab.performClick()
+        }
+
         mBillingManager?.destroy()
         super.onDestroy()
     }

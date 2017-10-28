@@ -23,6 +23,7 @@ import android.preference.PreferenceManager
 import android.app.NotificationManager
 import android.app.NotificationChannel
 import android.os.Build
+import software.kanunnikoff.screenrec.ui.NotificationActivity
 
 
 /**
@@ -67,13 +68,10 @@ object Core {
     }
 
     fun getNotification(header: String, body: String): Notification {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        val intent = Intent(context, NotificationActivity::class.java)
 
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-
         val notificationManager = context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         val notificationBuilder: Notification.Builder
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -95,11 +93,6 @@ object Core {
                     .setContentIntent(pendingIntent)
                     .setUsesChronometer(true)
         }
-
-        val stopRecordingAction = Intent(context, MainActivity::class.java)
-        stopRecordingAction.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        stopRecordingAction.putExtra(Core.STOP_RECORDING_ACTION, true)
-        notificationBuilder.addAction(0, context!!.resources.getString(R.string.stop_recording_action), PendingIntent.getActivity(context, 0, stopRecordingAction, PendingIntent.FLAG_UPDATE_CURRENT))
 
         return notificationBuilder.build()
     }
